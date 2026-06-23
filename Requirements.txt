@@ -2,6 +2,8 @@
 # Python >= 3.10 recommended
 
 # ── Audio / Video acquisition ─────────────────────────────────────────────────
+python-dotenv>=1.0.0              # Load API keys from .env
+
 yt-dlp>=2024.4.9                  # Download audio from YouTube URLs
 pydub>=0.25.1                     # Audio file manipulation / format conversion
 audioop-lts>=0.2.1                # audioop compatibility for Python 3.13+
@@ -39,7 +41,6 @@ reportlab>=4.2.0                  # PDF generation
 fpdf2>=2.7.9                      # Lightweight alternative PDF library
 
 # ── Utilities ─────────────────────────────────────────────────────────────────
-python-dotenv>=1.0.0              # Load API keys from .env
 numpy>=1.26.0
 tqdm>=4.66.0                      # Progress bars
 requests>=2.32.0
