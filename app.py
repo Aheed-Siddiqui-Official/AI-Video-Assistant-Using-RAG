@@ -1,10 +1,15 @@
 import streamlit as st
+
+MISTRAL_API_KEY = st.secrets["MISTRAL_API_KEY"]
+WHISPER_MODEL = st.secrets.get("WHISPER_MODEL", "small")
+SARVAM_API_KEY = st.secrets.get("SARVAM_API_KEY")
+SARVAM_STT_MODEL = st.secrets.get("SARVAM_STT_MODEL", "saaras:v2.5")
+
 import time
 import os
 import subprocess
 import sys
 from pathlib import Path
-from dotenv import load_dotenv
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 from utils.audio_processor import process_input
 from core.transcriber import transcribe_all
@@ -15,8 +20,6 @@ from core.rag_engine import build_rag_chain, ask_question
 if get_script_run_ctx(suppress_warning=True) is None and not os.environ.get("STREAMLIT_SERVER_PORT"):
     os.chdir(Path(__file__).resolve().parent)
     raise SystemExit(subprocess.call([sys.executable, "-m", "streamlit", "run", "app.py"]))
-
-load_dotenv()
 
 # ─── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(
