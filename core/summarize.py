@@ -1,7 +1,6 @@
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 
 import os
@@ -9,13 +8,20 @@ import os
 def get_llm():
     return ChatMistralAI(model = "mistral-small-latest", mistral_api_key = os.getenv("MISTRAL_API_KEY"), temperature=0.3)
 
-def split_transcript(transcript: str) -> list:
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 3000,
-        chunk_overlap = 200
-    )
+def split_text(text: str, chunk_size: int, chunk_overlap: int) -> list[str]:
+    if chunk_overlap >= chunk_size:
+        raise ValueError("chunk_overlap must be smaller than chunk_size")
 
-    return splitter.split_text(transcript)
+    chunks = []
+    step = chunk_size - chunk_overlap
+    for start in range(0, len(text), step):
+        chunk = text[start : start + chunk_size].strip()
+        if chunk:
+            chunks.append(chunk)
+    return chunks
+
+def split_transcript(transcript: str) -> list:
+    return split_text(transcript, chunk_size=3000, chunk_overlap=200)
 
 def summarize(transcript : str) -> str:
     llm = get_llm()
